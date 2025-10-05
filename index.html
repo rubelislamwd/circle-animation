@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar System Orbit</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f9fcfe;
+      font-family: sans-serif;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .orbit-container {
+      position: relative;
+      width: 90vmin;  /* viewport minimum dimension */
+      height: 90vmin;
+      max-width: 400px;
+      max-height: 400px;
+    }
+
+    .center-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 25vmin;  /* responsive size */
+      height: 25vmin;
+      max-width: 100px;
+      max-height: 100px;
+      background: #fff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .center-logo img {
+      width: 50%;
+      height: auto;
+    }
+
+    .planet {
+      position: absolute;
+      width: 20vmin;
+      height: 20vmin;
+      max-width: 100px;
+      max-height: 100px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 2vmin;
+      max-font-size: 13px;
+      font-weight: bold;
+      color: #111;
+      user-select: none;
+    }
+
+    .check {
+      margin-top: 6px;
+      font-size: 3vmin;
+      max-font-size: 16px;
+      background: #a3e6f3;
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .orbit-path {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px dashed #cde7f7;
+      border-radius: 50%;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="orbit-container">
+    <div class="orbit-path"></div>
+    <div class="center-logo">
+      <img src="your-logo.png" alt="Logo" />
+    </div>
+
+    <!-- 6 planets -->
+    <div class="planet" id="planet1">Real Time<br>Support <div class="check">✔</div></div>
+    <div class="planet" id="planet2">24/7<br>Support <div class="check">✔</div></div>
+    <div class="planet" id="planet3">Real Time<br>Support <div class="check">✔</div></div>
+    <div class="planet" id="planet4">24/7 <div class="check">✔</div></div>
+    <div class="planet" id="planet5">Real Time<br>Support <div class="check">✔</div></div>
+    <div class="planet" id="planet6">Real Time<br>Support <div class="check">✔</div></div>
+  </div>
+
+  <script>
+    const planets = [
+      document.getElementById("planet1"),
+      document.getElementById("planet2"),
+      document.getElementById("planet3"),
+      document.getElementById("planet4"),
+      document.getElementById("planet5"),
+      document.getElementById("planet6"),
+    ];
+
+    let angle = 0;
+
+    function animatePlanets() {
+      const container = document.querySelector('.orbit-container');
+      const containerRect = container.getBoundingClientRect();
+
+      const centerX = containerRect.width / 2;
+      const centerY = containerRect.height / 2;
+
+      // radius relative to container size
+      const radius = containerRect.width * 0.35;
+
+      planets.forEach((planet, i) => {
+        const theta = angle + (i * (Math.PI * 2) / planets.length);
+        // planet offset = half of planet width
+        const planetWidth = planet.getBoundingClientRect().width;
+        const planetHeight = planet.getBoundingClientRect().height;
+
+        const x = centerX + radius * Math.cos(theta) - planetWidth / 2;
+        const y = centerY + radius * Math.sin(theta) - planetHeight / 2;
+
+        planet.style.left = x + "px";
+        planet.style.top = y + "px";
+      });
+
+      angle += 0.01;
+      requestAnimationFrame(animatePlanets);
+    }
+
+    animatePlanets();
+
+    // Recalculate positions on window resize for smooth responsiveness
+    window.addEventListener('resize', () => {
+      // This triggers animatePlanets on next frame with updated sizes
+      angle += 0; 
+    });
+  </script>
+</body>
+</html>
